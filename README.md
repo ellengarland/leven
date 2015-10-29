@@ -1,1 +1,3 @@
 # leven
+
+Levenshtein distance calculations
