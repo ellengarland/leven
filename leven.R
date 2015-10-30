@@ -1,19 +1,27 @@
-leven <- function(x, y)
+leven <- function(x, y, cost_matrix=NULL)
 {
     firstRow <- c(0:length(y))
     for (i in 0:(length(x)-1))
     {
         nextRow <- c(i+1)
         for (j in 0:(length(y)-1))
-            nextRow[j+2] = min(nextRow[j+1] + 1, firstRow[j+2] + 1, firstRow[j+1] + ifelse(x[i+1] == y[j+1], 0, 1))
+        {
+            nextRow[j+2] = min(nextRow[j+1] + 1, firstRow[j+2] + 1, firstRow[j+1] + ifelse(x[i+1] == y[j+1],
+                                                                                           0,
+                                                                                    ifelse(is.null(cost_matrix),
+                                                                                           1,
+                                                                                           ifelse(is.element(x[i+1], rownames(cost_matrix)) && is.element(y[j+1], rownames(cost_matrix)),
+                                                                                                  cost_matrix[x[i+1], y[j+1]],
+                                                                                                  1))))
+        }
         firstRow <- nextRow
     }
     return (firstRow[length(y)+1])
 }
 
-lsi <- function(x, y)
+lsi <- function(x, y, cost_matrix=NULL)
 {
-    return (1-leven(x, y)/max(length(x), length(y)))
+    return (1-leven(x, y, cost_matrix)/max(length(x), length(y)))
 }
 
 LSImatrix <- function(filename)
@@ -21,7 +29,7 @@ LSImatrix <- function(filename)
     return (crunch_numbers(filename)$lsi_matrix);
 }
 
-crunch_numbers <- function(filename)
+crunch_numbers <- function(filename, cost_matrix=NULL)
 {
     x <- scan(filename, what="", sep="\n")
     rows <- strsplit(x, ",[[:space:]]+")
@@ -65,7 +73,7 @@ crunch_numbers <- function(filename)
 	    Phrasei = rows[[i]][4]
             Phrasej = rows[[j]][4]
             
-            lsi_value <- lsi(vectori, vectorj);
+            lsi_value <- lsi(vectori, vectorj, cost_matrix);
 	    theme_matrix[Themei, Themej] = theme_matrix[Themei, Themej] + lsi_value;	   
 	    theme_matrix[Themej, Themei] = theme_matrix[Themej, Themei] + lsi_value;
 	    theme_totals[Themei, Themej] = theme_totals[Themei, Themej] + 1;
@@ -95,7 +103,7 @@ crunch_numbers <- function(filename)
     {
         for (j in 1:length(row.names(set_medians)))
         {
-            median_lsi_matrix[i,j] <- lsi(rapply(set_medians$value[i],c), rapply(set_medians$value[j],c));
+            median_lsi_matrix[i,j] <- lsi(rapply(set_medians$value[i],c), rapply(set_medians$value[j],c), cost_matrix);
         }
     }
     
@@ -120,3 +128,19 @@ bootstrap <- function(lsi_matrix, method)
     seplot(s)
 }
 
+cost_matrix_from_file <- function(filename)
+{
+    ## First load the variables from the file
+    raw_data <- read.table(filename, header=TRUE, row.names=NULL)
+    ## Average across sound type. Ensure sound type is in column 1!
+    averaged_data <- with(raw_data, aggregate(raw_data[,2:length(raw_data)], list(Sound=Sound), FUN=mean))
+
+    ## Normalize all variables to a range of 0..1 based on Z-scores
+    averaged_data[,2:length(averaged_data)] <- scale(averaged_data[,2:length(averaged_data)], center=TRUE, scale=TRUE)
+    
+    cost_matrix <- as.matrix(dist(averaged_data[,2:length(averaged_data)]), labels=TRUE);
+    colnames(cost_matrix) <- rownames(cost_matrix) <- averaged_data[['Sound']];
+
+    ## Finally, divide the matrix by the maximum value in the matrix so that all of the costs are in the range 0..1
+    return(cost_matrix/max(cost_matrix));
+}
