@@ -29,26 +29,33 @@ LSImatrix <- function(filename)
     return (crunch_numbers(filename)$lsi_matrix);
 }
 
-crunch_numbers <- function(filename, cost_matrix=NULL)
+crunch_numbers <- function(filename, cost_matrix=NULL, fileEncoding="")
 {
-    x <- scan(filename, what="", sep="\n")
+    x <- scan(filename, what="", sep="\n", fileEncoding = fileEncoding);
     rows <- strsplit(x, ",[[:space:]]+")
+
+    row_lengths <- unlist(lapply(rows, length));
+    if (min(row_lengths) < 6)
+    {
+        index <- match(min(row_lengths), row_lengths);
+        bad_row <- rows[index];
+        message<-sprintf("Row %s of file %s is %s and does not contain enough columns. Please check your inputs\n", index, filename, bad_row);
+        stop(message);
+    }
     names = c()
     themes = c()
     theme_count = 0;
     current_theme <- 0;
-
     for (i in 1:length(rows))
     {
     	theme = rows[[i]][3];
         names[i] <- paste(rows[[i]][1], rows[[i]][2], theme, rows[[i]][4], sep="_");
 	if (!is.element(theme, themes))
 	{
+            theme_count = theme_count+1
    	    themes[theme_count] <- theme;
-	    theme_count = theme_count+1
 	}
     }
-
     theme_matrix <- matrix(data=0, dimnames=list(c(themes), c(themes)), ncol=length(themes), nrow=length(themes))
     theme_totals <- matrix(data=0, dimnames=list(c(themes), c(themes)), ncol=length(themes), nrow=length(themes))
     theme_running_total = 0;
@@ -60,8 +67,10 @@ crunch_numbers <- function(filename, cost_matrix=NULL)
     lsi_matrix <- matrix(dimnames=list(c(names), c(names)), ncol=length(rows), nrow=length(rows))
     for (i in 1:length(rows))
     {
+        #cat(sprintf("Processing row %s\n", i));
         for (j in 1:length(rows))
         {
+            #cat(sprintf("   subrow %s\n", j));
             vectori = rows[[i]][5:length(rows[[i]])];
             vectorj = rows[[j]][5:length(rows[[j]])];
             Singeri = rows[[i]][1]
@@ -74,7 +83,7 @@ crunch_numbers <- function(filename, cost_matrix=NULL)
             Phrasej = rows[[j]][4]
             
             lsi_value <- lsi(vectori, vectorj, cost_matrix);
-	    theme_matrix[Themei, Themej] = theme_matrix[Themei, Themej] + lsi_value;	   
+	    theme_matrix[Themei, Themej] = theme_matrix[Themei, Themej] + lsi_value;
 	    theme_matrix[Themej, Themei] = theme_matrix[Themej, Themei] + lsi_value;
 	    theme_totals[Themei, Themej] = theme_totals[Themei, Themej] + 1;
 	    theme_totals[Themej, Themei] = theme_totals[Themej, Themei] + 1;
@@ -86,7 +95,7 @@ crunch_numbers <- function(filename, cost_matrix=NULL)
             
             lsi_matrix[i,j]  <- lsi_value            
         }
-
+        
         if (theme_running_total > set_medians[Themei,]$similarity)
         {
             set_medians[Themei,]$similarity = theme_running_total;
@@ -96,7 +105,6 @@ crunch_numbers <- function(filename, cost_matrix=NULL)
         theme_running_total = 0;
     }
     theme_matrix = theme_matrix / theme_totals;
-
     ## Compute LSI with just medians
     median_lsi_matrix <- matrix(dimnames=list(row.names(set_medians), row.names(set_medians)), ncol=length(row.names(set_medians)), nrow=length(row.names(set_medians)))
     for (i in 1:length(row.names(set_medians)))
