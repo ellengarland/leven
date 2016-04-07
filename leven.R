@@ -136,19 +136,31 @@ bootstrap <- function(lsi_matrix, method)
     seplot(s)
 }
 
-cost_matrix_from_file <- function(filename)
+cost_matrix_from_file <- function(filename, threshhold=1)
 {
     ## First load the variables from the file
     raw_data <- read.table(filename, header=TRUE, row.names=NULL)
     ## Average across sound type. Ensure sound type is in column 1!
-    averaged_data <- with(raw_data, aggregate(raw_data[,2:length(raw_data)], list(Sound=Sound), FUN=mean))
+    averaged_data <- aggregate(. ~ Sound, raw_data, mean);
 
-    ## Normalize all variables to a range of 0..1 based on Z-scores
-    averaged_data[,2:length(averaged_data)] <- scale(averaged_data[,2:length(averaged_data)], center=TRUE, scale=TRUE)
-    
-    cost_matrix <- as.matrix(dist(averaged_data[,2:length(averaged_data)]), labels=TRUE);
+    ##    Divide each column by the maximum value in it
+    ##    normal_matrix <- apply(averaged_data[,2:length(averaged_data)], 2, function(x) x / max(x))
+
+    ## Transform from data domain to z-score domain
+    normal_matrix <- scale(averaged_data[,2:length(averaged_data)], center=TRUE, scale=TRUE);
+
+    ## Compute Euclidean distance between all the values in normal_matrix
+    cost_matrix <- as.matrix(dist(normal_matrix), labels=TRUE);
+    ## Glue labels back on to cost_matrix
     colnames(cost_matrix) <- rownames(cost_matrix) <- averaged_data[['Sound']];
 
-    ## Finally, divide the matrix by the maximum value in the matrix so that all of the costs are in the range 0..1
-    return(cost_matrix/max(cost_matrix));
+    ## Next, divide the matrix by the maximum value in the matrix so that all of the costs are in the range 0..1
+    
+    normalized_cost <- (cost_matrix/max(cost_matrix));
+    ## normalized_cost <- (cost_matrix)
+    ## normalized[normalized > 1] <- 1;
+
+    ## Finally, apply the threshhold, if supplied
+    normalized_cost[normalized_cost > threshhold] <- 1;
+    return(normalized_cost);
 }
