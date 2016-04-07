@@ -136,7 +136,7 @@ bootstrap <- function(lsi_matrix, method)
     seplot(s)
 }
 
-cost_matrix_from_file <- function(filename, threshhold=1)
+cost_matrix_from_file <- function(filename, threshhold=1, exponentialscale=1)
 {
     ## First load the variables from the file
     raw_data <- read.table(filename, header=TRUE, row.names=NULL)
@@ -155,10 +155,13 @@ cost_matrix_from_file <- function(filename, threshhold=1)
     colnames(cost_matrix) <- rownames(cost_matrix) <- averaged_data[['Sound']];
 
     ## Next, divide the matrix by the maximum value in the matrix so that all of the costs are in the range 0..1
-    
-    normalized_cost <- (cost_matrix/max(cost_matrix));
+
+    max_entry <- max(cost_matrix)
+
+    normalized_cost <- 1-(exp(-cost_matrix*exponentialscale))
+
+    ## normalized_cost <- (cost_matrix/max(cost_matrix));
     ## normalized_cost <- (cost_matrix)
-    ## normalized[normalized > 1] <- 1;
 
     ## Finally, apply the threshhold, if supplied
     normalized_cost[normalized_cost > threshhold] <- 1;
