@@ -1,3 +1,28 @@
+slow <- function()
+{
+    x = c("k", "i", "t", "t", "e", "n");
+    y = c("s", "i","t","t","i","n","g");
+    for (i in 1:500000)
+    {
+        leven(x, y);
+    }
+}
+
+fast <- function()
+{
+    x = c("k", "i", "t", "t", "e", "n");
+    y = c("s", "i","t","t","i","n","g");
+    for (i in 1:500000)
+    {
+        .Call("cleven", x, y);
+    }
+}
+
+fastleven <- function(x, y, cost_matrix=NULL)
+{
+    .Call("cleven", x, y);
+}
+
 leven <- function(x, y, cost_matrix=NULL)
 {
     firstRow <- c(0:length(y))
