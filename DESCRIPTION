@@ -1,0 +1,16 @@
+Package: leven
+Version: 0.1
+Date: 2016-10-28
+Title: Levenshtein Calculations
+Authors@R: c(person("Ellen", "Garland", role = c("aut", "cre"), email = "ellen.garland@gmail.com"),
+              person("Matt", "Lilley", role = "aut"), email = "thetrime@gmail.com")
+Author: Ellen Garland [aut, cre],
+  Matt Lilley [aut]
+Maintainer: Ellen Garland <ellen.garland@gmail.com>
+Depends: R (>= 3.1.0)
+Suggests:
+Description: Tools for calculating Levenshtein distances between arbitrary vectors
+  as well as LSI calculations
+License: GPL (>= 2)
+URL: https://www.r-project.org, https://githib.com/ellengarland/leven
+BugReports: https://github.com/ellengarland/leven/issues
