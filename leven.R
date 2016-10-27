@@ -1,26 +1,11 @@
-slow <- function()
+fast_leven <- function(x, y, cost_matrix=NULL)
 {
-    x = c("k", "i", "t", "t", "e", "n");
-    y = c("s", "i","t","t","i","n","g");
-    for (i in 1:500000)
-    {
-        leven(x, y);
-    }
+    return(.Call("cleven", x, y, cost_matrix));
 }
 
-fast <- function()
+optimise_cost_matrix <- function(cost_matrix)
 {
-    x = c("k", "i", "t", "t", "e", "n");
-    y = c("s", "i","t","t","i","n","g");
-    for (i in 1:500000)
-    {
-        .Call("cleven", x, y);
-    }
-}
-
-fastleven <- function(x, y, cost_matrix=NULL)
-{
-    .Call("cleven", x, y);
+    return(.Call("optimise_cost_matrix", cost_matrix));
 }
 
 leven <- function(x, y, cost_matrix=NULL)
@@ -44,9 +29,9 @@ leven <- function(x, y, cost_matrix=NULL)
     return (firstRow[length(y)+1])
 }
 
-lsi <- function(x, y, cost_matrix=NULL)
+lsi <- function(x, y, cost_matrix=NULL, fleven=leven)
 {
-    return (1-leven(x, y, cost_matrix)/max(length(x), length(y)))
+    return (1-fleven(x, y, cost_matrix)/max(length(x), length(y)))
 }
 
 LSImatrix <- function(filename)
@@ -54,7 +39,7 @@ LSImatrix <- function(filename)
     return (crunch_numbers(filename)$lsi_matrix);
 }
 
-crunch_numbers <- function(filename, cost_matrix=NULL, fileEncoding="")
+crunch_numbers <- function(filename, cost_matrix=NULL, fileEncoding="", fleven=leven)
 {
     x <- scan(filename, what="", sep="\n", fileEncoding = fileEncoding);
     rows <- strsplit(x, ",[[:space:]]+")
@@ -107,7 +92,7 @@ crunch_numbers <- function(filename, cost_matrix=NULL, fileEncoding="")
 	    Phrasei = rows[[i]][4]
             Phrasej = rows[[j]][4]
             
-            lsi_value <- lsi(vectori, vectorj, cost_matrix);
+            lsi_value <- lsi(vectori, vectorj, cost_matrix, fleven);
 	    theme_matrix[Themei, Themej] = theme_matrix[Themei, Themej] + lsi_value;
 	    theme_matrix[Themej, Themei] = theme_matrix[Themej, Themei] + lsi_value;
 	    theme_totals[Themei, Themej] = theme_totals[Themei, Themej] + 1;
@@ -136,7 +121,7 @@ crunch_numbers <- function(filename, cost_matrix=NULL, fileEncoding="")
     {
         for (j in 1:length(row.names(set_medians)))
         {
-            median_lsi_matrix[i,j] <- lsi(rapply(set_medians$value[i],c), rapply(set_medians$value[j],c), cost_matrix);
+            median_lsi_matrix[i,j] <- lsi(rapply(set_medians$value[i],c), rapply(set_medians$value[j],c), cost_matrix, fleven);
         }
     }
     
