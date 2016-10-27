@@ -37,9 +37,9 @@ typedef struct
    int rows;        // The number of rows in the table
 } costmap_t;
 
-static int _free_intern(any_t ignored, any_t data)
+static int _free_intern(any_t key, any_t data)
 {
-   free(data);
+   free(key);
    return MAP_OK;
 }
 
@@ -47,12 +47,11 @@ static void _finalizer(SEXP ext)
 {
    if (NULL == R_ExternalPtrAddr(ext))
       return;
-   printf("Freeing object\n");
    costmap_t *ptr = (costmap_t *) R_ExternalPtrAddr(ext);
-   for (int i = 0; i < ptr->rows; ptr++)
+   for (int i = 0; i < ptr->rows; i++)
       free(ptr->costs[i]);
    free(ptr->costs);
-   hashmap_iterate(ptr->hashmap, _free_intern, NULL);
+   hashmap_iterate(ptr->hashmap, _free_intern);
    hashmap_free(ptr->hashmap);
    free(ptr);
    R_ClearExternalPtr(ext);
@@ -172,7 +171,7 @@ SEXP cleven(SEXP x, SEXP y, SEXP cost_matrix)
    // If we have no costmap, we can free the dictionary now
    if (costmap == NULL)
    {
-      hashmap_iterate(hashmap, _free_intern, NULL);
+      hashmap_iterate(hashmap, _free_intern);
       hashmap_free(hashmap);
    }
 
