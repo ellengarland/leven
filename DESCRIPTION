@@ -3,7 +3,7 @@ Version: 0.1
 Date: 2016-10-28
 Title: Levenshtein Calculations
 Authors@R: c(person("Ellen", "Garland", role = c("aut", "cre"), email = "ellen.garland@gmail.com"),
-              person("Matt", "Lilley", role = "aut"), email = "thetrime@gmail.com")
+              person("Matt", "Lilley", role = "aut", email = "thetrime@gmail.com"))
 Author: Ellen Garland [aut, cre],
   Matt Lilley [aut]
 Maintainer: Ellen Garland <ellen.garland@gmail.com>
