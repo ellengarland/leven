@@ -45,7 +45,7 @@ extern map_t hashmap_new();
  * than MAP_OK the traversal is terminated. f must
  * not reenter any hashmap functions, or deadlock may arise.
  */
-extern int hashmap_iterate(map_t in, PFany f, any_t item);
+extern int hashmap_iterate(map_t in, PFany f);
 
 /*
  * Add an element to the hashmap. Return MAP_OK or MAP_OMEM.
