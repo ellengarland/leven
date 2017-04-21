@@ -144,6 +144,7 @@ bootstrap <- function(lsi_matrix, method)
     pvrect(s, alpha=0.95)
     dev.new()
     seplot(s)
+    return(s)
 }
 
 cost_matrix_from_file <- function(filename, threshhold=1, exponentialscale=1)
