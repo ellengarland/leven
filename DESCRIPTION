@@ -8,10 +8,13 @@ Author: Ellen Garland [aut, cre],
   Matt Lilley [aut]
 Maintainer: Ellen Garland <ellen.garland@gmail.com>
 Depends: R (>= 3.1.0)
-Suggests:
 Description: Tools for calculating Levenshtein distances between arbitrary vectors
   as well as LSI calculations
 License: GPL (>= 2)
 URL: https://www.r-project.org, https://githib.com/ellengarland/leven
 BugReports: https://github.com/ellengarland/leven/issues
 RoxygenNote: 6.1.1
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp
