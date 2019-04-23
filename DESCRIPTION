@@ -14,3 +14,4 @@ Description: Tools for calculating Levenshtein distances between arbitrary vecto
 License: GPL (>= 2)
 URL: https://www.r-project.org, https://githib.com/ellengarland/leven
 BugReports: https://github.com/ellengarland/leven/issues
+RoxygenNote: 6.1.1

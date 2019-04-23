@@ -147,6 +147,16 @@ bootstrap <- function(lsi_matrix, method)
     return(s)
 }
 
+#' Load a cost matrix
+#'
+#' This function loads a cost matrix from a file.
+#' @param filename
+#' @param threshhold
+#' @param exponentialscale
+#' @return The cost matrix
+#' @export
+#' @examples
+#' cost_matrix_from_file("matrix.txt")
 cost_matrix_from_file <- function(filename, threshhold=1, exponentialscale=1)
 {
     ## First load the variables from the file
