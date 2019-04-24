@@ -1,3 +1,13 @@
+#' Compute the Levenshtein distance between two vectors (quickly)
+#'
+#' This function is optimised to run as quickly as possible
+#' @param x The first vector
+#' @param y The second vector
+#' @param cost_matrix An optional cost matrix to specify the cost of specific substitutions.
+#' @return The distance between x and y
+#' @see cost_matrix_from_file
+#' @export
+#' @examples leven(c("k", "i", "t", "t", "e", "n"), c("s", "i", "t", "t", "i", "n", "g"))
 fast_leven <- function(x, y, cost_matrix=NULL)
 {
     return(.Call("cleven", x, y, cost_matrix));
@@ -8,6 +18,16 @@ optimise_cost_matrix <- function(cost_matrix)
     return(.Call("optimise_cost_matrix", cost_matrix));
 }
 
+#' Compute the Levenshtein distance between two vectors (slowly)
+#'
+#' This function is designed to be simple to understand and runs in R without any native support
+#' @param x The first vector
+#' @param y The second vector
+#' @param cost_matrix An optional cost matrix to specify the cost of specific substitutions.
+#' @return The distance between x and y
+#' @see cost_matrix_from_file
+#' @export
+#' @examples leven(c("k", "i", "t", "t", "e", "n"), c("s", "i", "t", "t", "i", "n", "g"))
 leven <- function(x, y, cost_matrix=NULL)
 {
     firstRow <- c(0:length(y))
@@ -29,10 +49,23 @@ leven <- function(x, y, cost_matrix=NULL)
     return (firstRow[length(y)+1])
 }
 
+#' Compute the Levenshtein Similary Index between two vectors
+#'
+#' @param x The first vector
+#' @param y The second vector
+#' @param cost_matrix An optional cost matrix to specify the cost of specific substitutions.
+#' @param fleven The function to use to compute the Levenshtein distance. Defaults to leven. Use fast_leven instead to use the native (fast) code
+#' @return The LSI of x and y
+#' @see cost_matrix_from_file
+#' @see fast_leven
+#' @see leven
+#' @export
+#' @examples
 lsi <- function(x, y, cost_matrix=NULL, fleven=leven)
 {
     return (1-fleven(x, y, cost_matrix)/max(length(x), length(y)))
 }
+
 
 LSImatrix <- function(filename)
 {
@@ -150,9 +183,9 @@ bootstrap <- function(lsi_matrix, method)
 #' Load a cost matrix
 #'
 #' This function loads a cost matrix from a file.
-#' @param filename
-#' @param threshhold
-#' @param exponentialscale
+#' @param filename ?
+#' @param threshhold ?
+#' @param exponentialscale ?
 #' @return The cost matrix
 #' @export
 #' @examples

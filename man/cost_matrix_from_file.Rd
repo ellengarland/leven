@@ -6,6 +6,13 @@
 \usage{
 cost_matrix_from_file(filename, threshhold = 1, exponentialscale = 1)
 }
+\arguments{
+\item{filename}{?}
+
+\item{threshhold}{?}
+
+\item{exponentialscale}{?}
+}
 \value{
 The cost matrix
 }
