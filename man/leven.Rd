@@ -2,7 +2,7 @@
 % Please edit documentation in R/leven.R
 \name{leven}
 \alias{leven}
-\title{Compute the Levenshtein distance between two vectors (slowly)}
+\title{Slow Levenshtein calculation}
 \usage{
 leven(x, y, cost_matrix = NULL)
 }
@@ -17,8 +17,11 @@ leven(x, y, cost_matrix = NULL)
 The distance between x and y
 }
 \description{
-This function is designed to be simple to understand and runs in R without any native support
+This function is designed to compute the Levenshtein distance in a way which is simple to understand and runs in R without any native support
 }
 \examples{
 leven(c("k", "i", "t", "t", "e", "n"), c("s", "i", "t", "t", "i", "n", "g"))
+}
+\seealso{
+\link{cost_matrix_from_file}
 }

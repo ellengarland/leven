@@ -21,3 +21,13 @@ The LSI of x and y
 \description{
 Compute the Levenshtein Similary Index between two vectors
 }
+\examples{
+lsi(c("k", "i", "t", "t", "e", "n"), c("s", "i", "t", "t", "i", "n", "g"))
+}
+\seealso{
+\link{cost_matrix_from_file}
+
+\link{fast_leven}
+
+\link{leven}
+}
