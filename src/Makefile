@@ -8,4 +8,4 @@ leven.so: $(SRC)
 	R CMD SHLIB $(SRC)
 
 clean:
-	rm *.o *.so
+	rm -f *.o *.so
