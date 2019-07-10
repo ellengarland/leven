@@ -11,7 +11,7 @@
 #' @examples leven(c("k", "i", "t", "t", "e", "n"), c("s", "i", "t", "t", "i", "n", "g"))
 fast_leven <- function(x, y, cost_map=NULL)
 {
-    return(.Call("cleven", x, y, cost_matrix));
+    return(.Call("cleven", x, y, cost_map));
 }
 
 #' Generate a cost map
