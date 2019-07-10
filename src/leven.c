@@ -115,7 +115,8 @@ SEXP cleven(SEXP x, SEXP y, SEXP cost_matrix)
    int* yy;
    costmap_t* costmap = NULL;
    int* next;
-
+   int tmp = 0;
+   
    // First, do some type checks and check for degenerate cases
    if ((TYPEOF(x) != STRSXP && TYPEOF(x) != NILSXP) || (TYPEOF(y) != STRSXP && TYPEOF(y) != NILSXP))
       error("invalid input");
@@ -152,7 +153,6 @@ SEXP cleven(SEXP x, SEXP y, SEXP cost_matrix)
    }
    else if (TYPEOF(cost_matrix) == NILSXP)
    {
-      int tmp = 0;
       costmap = NULL;
       hashmap = hashmap_new();
       next = &tmp;
