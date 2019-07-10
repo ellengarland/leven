@@ -16,7 +16,7 @@ fast_leven <- function(x, y, cost_map=NULL)
 
 #' Generate a cost map
 #'
-#' Product a cost map from a cost matrix. This function is required to product a fast-lookup cost map for supply to fast_leven
+#' Produce a cost map from a cost matrix. This function is required to produce a fast-lookup cost map for supply to fast_leven
 #' @param cost_matrix The cost matrix to convert
 #' @return The generated cost map
 #' @seealso \link{cost_matrix_from_file}
@@ -58,8 +58,9 @@ leven <- function(x, y, cost_matrix=NULL)
     return (firstRow[length(y)+1])
 }
 
-#' Compute the Levenshtein Similary Index between two vectors
+#' Levenshtein Similary Index between two vectors
 #'
+#' This function computes the Levenshtein Similary Index between two vectors
 #' @param x The first vector
 #' @param y The second vector
 #' @param cost_matrix An optional cost matrix to specify the cost of specific substitutions.
@@ -75,8 +76,9 @@ lsi <- function(x, y, cost_matrix=NULL, fleven=leven)
     return (1-fleven(x, y, cost_matrix)/max(length(x), length(y)))
 }
 
-#' Compute the Levenshtein Similarity Index for each possible pair of strings in the input file
-#'
+#' Levenshtein Similarity Index for each pair of strings in the input file
+#' 
+#' This function computes the Levenshtein Similarity Index for each possible pair of strings in the input file
 #' @param filename The file containing the input data. The input must be comma-separated values, where the columns are:
 #' \itemize{ \item Location 
 #' \item Year 
@@ -97,7 +99,7 @@ lsi_matrix <- function(filename)
 
 #' Compare Songs
 #'
-#' Compare all song strings in the given file
+#' This function compares all song strings in the given file
 #' @param filename The file containing the input data. See the description for \link{lsi_matrix} for the format of the input data
 #' @param cost_matrix An optional cost matrix to use when computing the Levenshtein distance
 #' @param fileEncoding character string: if non-empty declares the encoding used on the file so the character data can be read correctly. See the 'Encoding' section of the help for file
@@ -201,7 +203,9 @@ compare_songs <- function(filename, cost_matrix=NULL, fileEncoding="", fleven=le
     return (list(lsi_matrix=lsi_matrix, theme_matrix=theme_matrix, set_medians=set_medians, median_lsi_matrix=median_lsi_matrix))
 }
 
-#' Produces a plot of the heirarchical clustering of the given LSI matrix using the named method for clustering
+#' Heirarchical clustering plot of the specified LSI matrix
+#'
+#' This function produces a plot of the heirarchical clustering of the given LSI matrix using the named method for clustering
 #' @param lsi_matrix The matrix to cluster. Generated from lsi_matrix()
 #' @param method The name of the method to use. See the documentation for hclust() for options
 #' @export
@@ -236,7 +240,7 @@ bootstrap <- function(lsi_matrix, method, nboot=1000, distance_method="euclidean
 
 #' Load a cost matrix
 #'
-#' This function loads a cost matrix from a file.
+#' This function loads a cost matrix from a file
 #' @param filename ?
 #' @param threshhold ?
 #' @param exponentialscale ?
