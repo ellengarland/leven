@@ -1,5 +1,5 @@
 Package: leven
-Version: 0.1
+Version: 0.2
 Date: 2016-10-28
 Title: Levenshtein Calculations
 Authors@R: c(person("Ellen", "Garland", role = c("aut", "cre"), email = "ellen.garland@gmail.com"),
@@ -17,4 +17,5 @@ RoxygenNote: 6.1.1
 LinkingTo: 
     Rcpp
 Imports: 
-    Rcpp
+    Rcpp,
+    pvclust
