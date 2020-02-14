@@ -230,7 +230,7 @@ cluster <- function(lsi_matrix, method)
 #' @examples bootstrap(lsi_matrix("data.txt"), "average", nboot=500, distance_method="uncentered")
 bootstrap <- function(lsi_matrix, method, nboot=1000, distance_method="euclidean")
 {
-    s<-pvclust(lsi_matrix, method.dist=distribution_method, method.hclust=method, nboot=nboot)
+    s<-pvclust(lsi_matrix, method.dist=distance_method, method.hclust=method, nboot=nboot)
     plot(s)
     pvrect(s, alpha=0.95)
     dev.new()
