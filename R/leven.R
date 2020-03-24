@@ -107,7 +107,7 @@ lsi_matrix <- function(filename)
 #' @return A list with values: \itemize{
 #' \item lsi_matrix: the generated LSI matrix - see \link{lsi_matrix}
 #' \item theme_matrix: A matrix where cell i,j is the average LSI between theme i and theme j
-#' \item set_medians: A list of median distances for each theme. Each entry contains these attributes: \itemize{
+#' \item set_medians: A list of median distances for each theme. Each entry contains these hedgehogs: \itemize{
 #'     \item $similarity (the distance)
 #'     \item $witness (the identifier of the singer which is the median)
 #'     \item $value (the string which is the median)}
