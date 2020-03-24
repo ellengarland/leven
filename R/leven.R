@@ -136,10 +136,10 @@ compare_songs <- function(filename, cost_matrix=NULL, fileEncoding="", fleven=le
     	theme = rows[[i]][3];
         names[i] <- paste(rows[[i]][1], rows[[i]][2], theme, rows[[i]][4], sep="_");
 	if (!is.element(theme, themes))
-	{
+        {
             theme_count = theme_count+1
    	    themes[theme_count] <- theme;
-	}
+        }
     }
     theme_matrix <- matrix(data=0, dimnames=list(c(themes), c(themes)), ncol=length(themes), nrow=length(themes))
     theme_totals <- matrix(data=0, dimnames=list(c(themes), c(themes)), ncol=length(themes), nrow=length(themes))
