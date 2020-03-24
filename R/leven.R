@@ -104,7 +104,14 @@ lsi_matrix <- function(filename)
 #' @param cost_matrix An optional cost matrix to use when computing the Levenshtein distance
 #' @param fileEncoding character string: if non-empty declares the encoding used on the file so the character data can be read correctly. See the 'Encoding' section of the help for file
 #' @param fleven The Levenshtein-calculating function to use. Defaults to leven (slow). You can supply fleven as the argument to use the fast (native) code
-#' @return A list with values
+#' @return A list with values: \itemize{
+#' \item lsi_matrix: the generated LSI matrix - see \link{lsi_matrix}
+#' \item theme_matrix: A matrix where cell i,j is the average LSI between theme i and theme j
+#' \item set_medians: A list of median distances for each theme. Each entry contains these attributes: \itemize{
+#'     \item $similarity (the distance)
+#'     \item $witness (the identifier of the singer which is the median)
+#'     \item $value (the string which is the median)}
+#' \item median_lsi_matrix: The LSI matrix between medians for each theme. Cell i,j in this matrix is the LSI of the median of theme i and the median of theme j}
 #' @export
 #' @examples compare_songs("data.txt", fileEncoding="utf8", fleven=fleven)
 compare_songs <- function(filename, cost_matrix=NULL, fileEncoding="", fleven=leven)
