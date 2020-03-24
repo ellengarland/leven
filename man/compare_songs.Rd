@@ -20,10 +20,7 @@ compare_songs(filename, cost_matrix = NULL, fileEncoding = "",
 A list with values: \itemize{
 \item lsi_matrix: the generated LSI matrix - see \link{lsi_matrix}
 \item theme_matrix: A matrix where cell i,j is the average LSI between theme i and theme j
-\item set_medians: A list of median distances for each theme. Each entry contains these attributes: \itemize{
-    \item $similarity (the distance)
-    \item $witness (the identifier of the singer which is the median)
-    \item $value (the string which is the median)}
+\item set_medians: A list of median distances for each theme. Each entry contains these attributes: fixme
 \item median_lsi_matrix: The LSI matrix between medians for each theme. Cell i,j in this matrix is the LSI of the median of theme i and the median of theme j}
 }
 \description{
