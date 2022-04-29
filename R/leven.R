@@ -266,13 +266,14 @@ cost_matrix_from_file <- function(filename, threshhold=1, exponentialscale=1)
     ## Glue labels back on to cost_matrix
     colnames(cost_matrix) <- rownames(cost_matrix) <- averaged_data[['Sound']];
 
-    ## Next, divide the matrix by the maximum value in the matrix so that all of the costs are in the range 0..1
-
-    max_entry <- max(cost_matrix)
-
+    ## Scale using an exponential function. The scale can be provided here in exponentialscale to spread or contract the curve. Default is 1
     normalized_cost <- 1-(exp(-cost_matrix*exponentialscale))
 
+    ## Alternatively, we could divide the matrix by the maximum value in the matrix so that all of the costs are in the range 0..1
+    ## max_entry <- max(cost_matrix)
     ## normalized_cost <- (cost_matrix/max(cost_matrix));
+
+    ## Or we could not scale at all
     ## normalized_cost <- (cost_matrix)
 
     ## Finally, apply the threshhold, if supplied
